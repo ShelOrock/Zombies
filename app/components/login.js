@@ -1,41 +1,27 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
-
-import { login } from '../redux/authentication/thunks';
-import { removeLogInError } from '../redux/authentication/actions';
 
 import { Header, Anchor } from './styled/Font';
 import { Hr } from "./styled/Div";
 import { Form, FormRow, FormColumn } from "./styled/Form";
 import { Input, InputFeedback } from "./styled/Input";
 import Button from "./styled/Button";
-import { createGlobalStyle } from "styled-components";
 
 class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "",
+      username: "",
       password: "",
       errors: {
-        emailError: "",
+        usernameError: "",
         passwordError: ""
       }
     };
   }
 
-  componentDidUpdate() {
-    const {
-      authentication: { isLoggedIn },
-    } = this.props;
-    //for now i just send it to the home page after login
-    if (isLoggedIn) this.props.history.push('/');
-  }
-
   handleOnClick = e => {
-    const { email, password } = this.state
     e.preventDefault();
-    this.props.login({ email, password });
+    //TODO: LOGIN USER/DISPATCH TO REDUX STORE
   };
 
   handleOnChange = ({ target: { name, value } }) => {
@@ -46,27 +32,19 @@ class Login extends Component {
     const { errors } = this.state;
     //TODO: Validate on submit for values not in our database NOT onchange
     switch (name) {
-      case "email":
-        const regex = /\S+@\S+\.\S+/
+      case "username":
         if (!value) {
           this.setState({
             errors: {
               ...errors,
-              emailError: "Email cannot be blank"
+              usernameError: "Username cannot be blank"
             }
           });
-        } else if(!regex.test(value)) {
-          this.setState({
-            errors: {
-              ...errors,
-              emailError: "Email invalid"
-            }
-          })
         } else {
           this.setState({
             errors: {
               ...errors,
-              emailError: ""
+              usernameError: ""
             }
           });
         }
@@ -94,13 +72,9 @@ class Login extends Component {
 
   render() {
     const {
-      email,
+      username,
       password,
-      errors,
-      errors: {
-        emailError,
-        passwordError
-      }
+      errors: { usernameError, passwordError }
     } = this.state;
     return (
       <Form>
@@ -114,16 +88,16 @@ class Login extends Component {
           </Button>
         </FormRow>
         <Hr />
-        <Header>Or sign in with your email and password</Header>
+        <Header>Or sign in with your username and password</Header>
         <FormColumn>
           <Input
             type="text"
-            placeholder="email"
+            placeholder="username"
             onChange={this.handleOnChange}
-            name="email"
-            value={email}
+            name="username"
+            value={username}
           />
-          <InputFeedback>{emailError}</InputFeedback>
+          <InputFeedback>{usernameError}</InputFeedback>
         </FormColumn>
 
         <FormColumn>
@@ -137,24 +111,11 @@ class Login extends Component {
           <InputFeedback>{passwordError}</InputFeedback>
         </FormColumn>
 
-        <Button disabled={
-          !email || !password || Object.values(errors).some(val => !!val)
-            ? true
-            : false
-          } onClick={this.handleOnClick}>Login</Button>
+        <Button onClick={this.handleOnClick}>Login</Button>
         <Anchor href='#'>Forgot Password?</Anchor>
       </Form>
     );
   }
 }
 
-const mapStateToProps = ({ authentication }) => ({ authentication });
-
-const mapDispatchToProps = dispatch => {
-  return {
-    login: info => dispatch(login(info)),
-    removeLogInError: () => dispatch(removeLogInError()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;
