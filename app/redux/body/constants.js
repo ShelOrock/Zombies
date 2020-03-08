@@ -1,1 +1,0 @@
-export default Symbol('DRAFT_BODY');
