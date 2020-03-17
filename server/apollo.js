@@ -8,6 +8,7 @@ const db = { Conversation, Reply, Tag, User, Cohort };
 
 const apollo_Server = new ApolloServer({
     typeDefs,
+    resolvers,
     dataSources: () => ({
         conversationAPI: new ConversationAPI({ db })
     })

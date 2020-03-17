@@ -7,7 +7,7 @@ const typeDefs = gql`
         hasAnswer: Boolean!
         repo: String
         replies: [Reply]
-        tags: [ID]
+        tag: String
     }
     type Reply {
         id: ID!
@@ -27,7 +27,7 @@ const typeDefs = gql`
     }
     type Tag {
         id: ID!
-        name: String
+        name: String!
         conversations: [Conversation]
     }
     type Query {
@@ -43,8 +43,16 @@ const typeDefs = gql`
         htmlCode: String
         author: ID!
     }
+
+    input ConversationInput {
+        title: String!
+        authorId: ID!
+        repo: String
+        tagId: ID
+    }
+
     type Mutation {
-        PostConversation(content: ReplyInput!): PostResponse
+        PostConversation(content: ConversationInput!): PostResponse
         PostReply(content: ReplyInput!): PostResponse
     }
     type PostResponse {

@@ -13,9 +13,40 @@ class ConversationAPI extends DataSource {
     }
 
     async getAllConversations() {
-        const conversations = await this.db.Conversation.findAll();
-        console.log(conversations);
+        const conversations = await this.db.Conversation.findAll({
+            include: [
+                {
+                  model: this.db.Reply,
+                  include: [{ model: this.db.User }],
+                  order: [['createdAt', 'DESC']]
+                },
+                {
+                  model: this.db.Tag,
+                  through: {
+                    attributes: [],
+                  },
+                },
+              ],
+        });
         return conversations.map(conversation => this.conversationReducer(conversation));
+    }
+
+    async createConversation({ content }) {
+        try {
+            const newConversation = await this.db.Conversation.create({
+                userId: content.authorId,
+                title: content.title,
+                repo: content.repo || '',
+            });
+            if (content.tagId) { 
+                await newConversation.addTag(content.tagId); 
+            }
+            return newConversation;
+        }
+        catch (e) {
+            return null;
+        }
+
     }
 
     conversationReducer(conversation) {
@@ -24,8 +55,12 @@ class ConversationAPI extends DataSource {
             title: conversation.title,
             hasAnswer: conversation.hasAnswer,
             repo: conversation.repo,
-            replies: [],
-            tags: []
+            replies: conversation.replies
+                ? conversation.replies.map(reply => this.replyReducer(reply))
+                : [],
+            tag: conversation.tags && conversation.tags.length
+                ? conversation.tags[0].name
+                : null,
         };
     }
 
@@ -42,11 +77,12 @@ class ConversationAPI extends DataSource {
         };
     }
 
-    tagReducer(tag) {
-        return {
-            id: tag.id
-        };
-    }
+    // tagReducer(tag) {
+    //     return {
+    //         id: tag.id,
+    //         name: tag.name
+    //     };
+    // }
 
 }
 

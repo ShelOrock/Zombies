@@ -6,7 +6,8 @@ console.log('port is ', PORT);
 const startServer = () => {
   apollo_Server.listen()
   .then(({ url }) => {
-    console.log(`Apollo server listening at ${url}`);
+    console.log(chalk.magenta(`Apollo server listening at ${url}`));
+    return true;
   })
   .then(() => {
     app.listen(PORT, () => {
