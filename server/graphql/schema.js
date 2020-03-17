@@ -1,0 +1,56 @@
+const { gql } = require('apollo-server');
+
+const typeDefs = gql`
+    type Conversation {
+        id: ID!
+        title: String!
+        hasAnswer: Boolean!
+        repo: String
+        replies: [Reply]
+        tags: [ID]
+    }
+    type Reply {
+        id: ID!
+        body: String
+        postIndex: Int!
+        isFlagged: Boolean!
+        jsCode: String
+        cssCode: String
+        htmlCode: String
+        timeSince: String
+    }
+    type User {
+        id: ID!
+        name: String
+        email: String!
+        password: String!
+    }
+    type Tag {
+        id: ID!
+        name: String
+        conversations: [Conversation]
+    }
+    type Query {
+        conversations: [Conversation]!
+        conversation(id: ID!): Conversation
+        tag(id: ID!): Tag
+        byTag(name: String): [Conversation]
+    }
+    input ReplyInput {
+        body: String
+        jsCode: String
+        cssCode: String
+        htmlCode: String
+        author: ID!
+    }
+    type Mutation {
+        PostConversation(content: ReplyInput!): PostResponse
+        PostReply(content: ReplyInput!): PostResponse
+    }
+    type PostResponse {
+        success: Boolean!
+        conversation: Conversation
+    }
+`;
+
+module.exports = typeDefs;
