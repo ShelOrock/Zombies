@@ -1,5 +1,4 @@
 const { DataSource } = require('apollo-datasource');
-const Sequelize = require('sequelize');
 
 
 class ConversationAPI extends DataSource {
@@ -29,6 +28,34 @@ class ConversationAPI extends DataSource {
               ],
         });
         return conversations.map(conversation => this.conversationReducer(conversation));
+    }
+
+    async getConversationById({ id }) {
+        try {
+            const dbResult = await this.db.Conversation.findOne({
+                where: {
+                    id: id,
+                },
+                include: [
+                    {
+                      model: this.db.Reply,
+                      include: [{ model: this.db.User }],
+                      order: [['createdAt', 'DESC']]
+                    },
+                    {
+                      model: this.db.Tag,
+                      through: {
+                        attributes: [],
+                      },
+                    },
+                ],
+            });
+            const conversation = this.conversationReducer(dbResult);
+            return conversation;
+        }
+        catch(e) {
+            return null;
+        }
     }
 
     async createConversation({ content }) {

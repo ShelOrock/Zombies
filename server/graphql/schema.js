@@ -41,7 +41,8 @@ const typeDefs = gql`
         jsCode: String
         cssCode: String
         htmlCode: String
-        author: ID!
+        conversationId: ID!
+        authorId: ID!
     }
 
     input ConversationInput {
