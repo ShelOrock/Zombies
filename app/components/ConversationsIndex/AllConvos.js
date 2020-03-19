@@ -26,18 +26,20 @@ const GET_CONVERSATIONS = gql`
       }
       tag
     }
+    tags {
+      id
+      name
+    }
   }
 `;
 
 function AllConvos(props) {
-  const [page, setPage] = useState(0);
   const [tags, setTags] = useState([]);
   const [searchStr, setSearch] = useState('');
-  const activeTags = useSelector(state => state.tags.active);
-  const dispatch = useDispatch();
 
   const { data, loading, error } = useQuery(GET_CONVERSATIONS);
   const [conversationList, setList] = useState([]);
+  const [allTags, setAllTags] = useState([]);
 
   const handleClick = id => {
     props.history.push(`/conversations/${id}`);
@@ -66,8 +68,8 @@ function AllConvos(props) {
 
   useEffect(() => {
     //load the whitelist of tags
-    if (!Object.keys(activeTags).length) {
-      dispatch(fetchTags());
+    if (data && !allTags.length) {
+      setAllTags(data.tags);
     }
     //if the data has loaded but conversation list is still empty, reset it
     if (data && !conversationList.length) {
@@ -105,7 +107,7 @@ function AllConvos(props) {
       </Font.Paragraph>
       <Card.CardContainer>
         {
-            activeTags.map(tag => (
+            allTags.map(tag => (
             <Pill
                 key={tag.id}
                 selected={tags.includes(tag.name)}

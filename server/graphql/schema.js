@@ -9,6 +9,7 @@ const typeDefs = gql`
         replies: [Reply]
         tag: String
     }
+
     type Reply {
         id: ID!
         body: String
@@ -19,23 +20,27 @@ const typeDefs = gql`
         htmlCode: String
         timeSince: String
     }
+
     type User {
         id: ID!
         name: String
         email: String!
         password: String!
     }
+
     type Tag {
         id: ID!
         name: String!
         conversations: [Conversation]
     }
+
     type Query {
         conversations: [Conversation]!
         conversation(id: ID!): Conversation
-        tag(id: ID!): Tag
-        byTag(name: String): [Conversation]
+        tags: [Tag]!
+        tag(name: String): Tag
     }
+
     input ReplyInput {
         body: String
         jsCode: String
@@ -56,6 +61,7 @@ const typeDefs = gql`
         PostConversation(content: ConversationInput!): PostResponse
         PostReply(content: ReplyInput!): PostResponse
     }
+
     type PostResponse {
         success: Boolean!
         conversation: Conversation

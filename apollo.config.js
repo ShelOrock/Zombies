@@ -1,5 +1,6 @@
 module.exports = {
     service: {
-      name: "zombies"
+      name: 'zombies',
+      service: 'zombies',
     }
   }

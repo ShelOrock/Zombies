@@ -4,6 +4,10 @@ module.exports = {
             dataSources.conversationAPI.getAllConversations(),
         conversation: (_, { id }, { dataSources }) => 
             dataSources.conversationAPI.getConversationById({ id }),
+        tags: (_, __, { dataSources }) => 
+            dataSources.tagAPI.getAllTags(),
+        tag: (_, { name }, { dataSources }) =>
+            dataSources.tagAPI.getTagByName({ name }),
     },
     Mutation: {
         PostConversation: async(_, { content }, { dataSources }) => {

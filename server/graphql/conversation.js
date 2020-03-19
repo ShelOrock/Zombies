@@ -1,5 +1,5 @@
 const { DataSource } = require('apollo-datasource');
-
+const { conversationReducer, replyReducer} = require('./commonMethods');
 
 class ConversationAPI extends DataSource {
     constructor({ db }) {
@@ -27,7 +27,7 @@ class ConversationAPI extends DataSource {
                 },
               ],
         });
-        return conversations.map(conversation => this.conversationReducer(conversation));
+        return conversations.map(conversation => conversationReducer(conversation));
     }
 
     async getConversationById({ id }) {
@@ -50,7 +50,7 @@ class ConversationAPI extends DataSource {
                     },
                 ],
             });
-            const conversation = this.conversationReducer(dbResult);
+            const conversation = conversationReducer(dbResult);
             return conversation;
         }
         catch(e) {
@@ -75,41 +75,6 @@ class ConversationAPI extends DataSource {
         }
 
     }
-
-    conversationReducer(conversation) {
-        return {
-            id: conversation.id,
-            title: conversation.title,
-            hasAnswer: conversation.hasAnswer,
-            repo: conversation.repo,
-            replies: conversation.replies
-                ? conversation.replies.map(reply => this.replyReducer(reply))
-                : [],
-            tag: conversation.tags && conversation.tags.length
-                ? conversation.tags[0].name
-                : null,
-        };
-    }
-
-    replyReducer(reply) {
-        return {
-            id: reply.id,
-            body: reply.body,
-            postIndex: reply.postNumber,
-            isFlagged: reply.isFlagged,
-            jsCode: reply.javascriptCode,
-            cssCode: reply.cssCode,
-            htmlCode: reply.htmlCode,
-            timeSince: reply.timeSincePosted
-        };
-    }
-
-    // tagReducer(tag) {
-    //     return {
-    //         id: tag.id,
-    //         name: tag.name
-    //     };
-    // }
 
 }
 
