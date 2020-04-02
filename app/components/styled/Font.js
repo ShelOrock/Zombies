@@ -51,20 +51,20 @@ export const h5 = styled.h5`
 
 export const Header = styled.h3`
   display: block;
-  margin: 1rem;
+  margin: 1rem 0;
   font-size: 1.1rem;
   font-weight: bold;
 `;
 
 export const Topic = styled.h2`
   display: block;
-  margin: 1rem;
+  margin: 1rem 0;
   font-size: 1.1rem;
   font-weight: bold;
 `;
 
 export const Title = styled.h6`
-  margin: 1rem;
+  margin: 1rem 0;
 `;
 
 export const Label = styled.h6`
