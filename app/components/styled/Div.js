@@ -7,7 +7,6 @@ export const MainContainer = styled.div`
 `;
 
 export const Container = styled.div`
-  flex: 1 1 auto;
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -15,8 +14,8 @@ export const Container = styled.div`
   align-items: flex-start;
   text-align: left;
   background-color: white;
-  padding: 2rem;
-  margin: 1rem 3rem;
+  padding: 2rem 3rem;
+  margin: 1rem 0rem;
 `;
 
 export const Paper = styled.div`
