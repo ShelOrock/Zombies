@@ -14,9 +14,8 @@ export const checkError = (dispatch, e) => {
     case 403:
       dispatch(
         statusMessage({
-          status: 'FAIL',
-          message:
-            'You do not have permission to perform this action. Contact an administator',
+          status: 'FAILED',
+          message: 'You do not have permission to perform this action. Contact an administator',
         })
       );
       break;
@@ -28,6 +27,7 @@ export const checkError = (dispatch, e) => {
           message: '404 - Not Found',
         })
       );
+      break;
 
     default:
       dispatch(
@@ -47,9 +47,19 @@ export const checkSuccess = (dispatch, e) => {
       dispatch(
         statusMessage({
           status: 'SUCCESS',
-          message: 'Successfully edited!',
+          message: 'Success!',
         })
       );
+      break;
+
+    case 201:
+        dispatch(
+          statusMessage({
+            status: 'SUCCESS',
+            message: 'Successfully edited!',
+          })
+        );
+      break;
 
     case 204:
       dispatch(
@@ -58,6 +68,7 @@ export const checkSuccess = (dispatch, e) => {
           message: 'Successfully deleted!',
         })
       );
+      break;
 
     default:
       dispatch(
@@ -66,5 +77,6 @@ export const checkSuccess = (dispatch, e) => {
           message: 'Request successfu!',
         })
       );
+      break;
   }
 };

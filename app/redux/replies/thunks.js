@@ -39,15 +39,18 @@ export const createReply = (content, token) => {
   };
 };
 
-export const updateReply = (id, reply, token) => {
+export const updateReply = (id, flagged, token) => {
   return dispatch => {
     return axios
-      .put(`/api/reply/${id}`, reply, {
+      .put(`/api/reply/${id}`, flagged, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       })
-      .then(() => dispatch(fetchAllReplies(token)))
+      .then(res => {
+        checkSuccess(dispatch, res.status)
+        dispatch(fetchAllReplies(token))
+      })
       .catch(e => checkError(dispatch, e.response.status));
   };
 };
