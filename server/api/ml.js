@@ -31,7 +31,25 @@ router.post('/', (req, res, next) => {
     catch (e) {
         console.log(e);
     }
-})
+});
+
+router.post('/train', (req, res, next) => {
+    try {
+        const { input, output } = req.body;
+        loadNeuralNet('trained_classifier.json', null, null)
+            .then(neuralNet => {
+                neuralNet.addDocument( input, output );
+                neuralNet.train();
+                neuralNet.save('trained_classifier.json', function () {});
+            })
+            .then(() => {
+                return res.status(200).send('success');
+            })
+    }
+    catch (e) {
+        console.log(e);
+    }
+});
 
 router.post('/classify', (req, res, next) => {
     try {
