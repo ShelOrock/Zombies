@@ -16,18 +16,18 @@ export const Pill = styled.div`
   height: 2rem;
   white-space: nowrap;
   line-height: 2rem;
-  background-color: ${(props) => {
+  background-color: ${props => {
     if (props.selected) {
       return '#CC3756';
     }
     return '#FF456C';
   }};
   border-radius: 1rem;
-  color: ${props => (props.secondary ? '#686868' : '#FFFFFF')};;
+  color: ${props => (props.secondary ? '#686868' : '#FFFFFF')};
   margin: 0.25rem 0.25rem;
   padding: 0 1rem;
   cursor: pointer;
   &:hover {
-    background-color: #CC3756;
+    background-color: #cc3756;
   }
 `;

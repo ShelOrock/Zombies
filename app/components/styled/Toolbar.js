@@ -6,7 +6,7 @@ export default styled.div`
   justify-content: space-evenly;
   align-items: center;
   align-content: center;
-  background-color: #FFF5E2;
+  background-color: #fff5e2;
   border: none!Important;
   border-radius: 3px;
 `;
