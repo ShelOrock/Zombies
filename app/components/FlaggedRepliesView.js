@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as Container from './styled/Div';
 import * as Font from './styled/Font';
 import * as Card from './styled/card';
-import SmallButton from './styled/SmallButton';
+import { Button } from './styled/Button';
 import { Hr } from './styled/Div';
 
 import {
@@ -64,12 +64,12 @@ class FlaggedReplies extends React.Component {
                 <Font.Header>Flagged Reply:</Font.Header>
                 <Font.Paragraph>{reply.body}</Font.Paragraph>
 
-                <SmallButton onClick={e => handleUpdateReply(e, reply)}>
+                <Button onClick={e => handleUpdateReply(e, reply)}>
                   unflagged
-                </SmallButton>
-                <SmallButton onClick={e => this.handleDeleteReply(e, reply.id)}>
+                </Button>
+                <Button onClick={e => this.handleDeleteReply(e, reply.id)}>
                   Delete
-                </SmallButton>
+                </Button>
               </Card.Card>
             ))}
           </Card.CardContainer>
