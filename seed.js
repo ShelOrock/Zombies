@@ -8,16 +8,15 @@ const {
   Tag,
   Cohort,
 } = require('./server/db/index');
-const fullstackDB = require('./fullstackDB');
 const whitelist = require('./whitelist');
-
 const { usersList, cohortList } = require('./seeding/index');
-
+const fullstackDB = require('./fullstackDB');
 const seed = async () => {
   try {
     await db.sync({ force: true });
 
-    const createdCohort = await Cohort.bulkCreate(cohortList);
+    await Cohort.bulkCreate(cohortList);
+
     const createdUser = await Promise.all(
       usersList.map(user => {
         return User.create({ ...user, cohortId: Math.ceil(Math.random() * 6) });
@@ -48,6 +47,7 @@ const seed = async () => {
           hasAnswer: answer,
           views: Math.ceil(Math.random() * 100),
           cohortId: Math.ceil(Math.random() * 6),
+          seen: false,
         });
       })
     );
@@ -60,7 +60,6 @@ const seed = async () => {
               userId: convObj.userId,
               conversationId: convObj.id,
               postNumber: i + 1,
-              isFlagged: Math.random() < 0.5,
             });
           } else {
             Reply.create({
@@ -68,7 +67,6 @@ const seed = async () => {
               userId: Math.ceil(Math.random() * 7),
               conversationId: convObj.id,
               postNumber: i + 1,
-              isFlagged: Math.random() < 0.5,
             });
           }
         })
