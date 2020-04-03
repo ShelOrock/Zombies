@@ -14,8 +14,8 @@ export default ({ reply }) => {
         console.original = console.log;
         let output = ''
         let itemsToRender = [];
-        console.log = arg => {
-          itemsToRender.push(arg)
+        console.log = (...args) => {
+          args.forEach(arg => itemsToRender.push(arg))
         };
         ${convertToGlyphs(reply.javascriptCode)};
         itemsToRender.forEach(item => output += item + '<br />');
@@ -34,7 +34,7 @@ export default ({ reply }) => {
 
   return (
     <div>
-      <iframe id='iframe' sandbox='allow-scripts allow-same-origin' name='replyOutput' src={urlSource}>
+      <iframe id='iframe' sandbox='allow-scripts allow-same-origin allow-forms' name='replyOutput' src={urlSource}>
         Oops. Your browser does not support iframes.
       </iframe>
       <div id='replyConsole'

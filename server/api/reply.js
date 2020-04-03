@@ -86,10 +86,9 @@ router.put('/:id', (req, res, next) => {
   if(req.headers.authorization !== `Bearer admin` && req.headers.authorization !== `Bearer user`) {
     return res.status(403).send('You do not have permission to perform this action. Contact administrator.')
   }
-
   Reply.update(
     {
-      ...req.body,
+      ...req.body
     },
     {
       where: { id: req.params.id },
@@ -98,8 +97,8 @@ router.put('/:id', (req, res, next) => {
   )
     .then(updated => {
       updated
-        ? res.status(201).send(updated[1][0])
-        : res.status(404).send(null);
+        ? res.sendStatus(201)
+        : res.sendStatus(404);
     })
     .catch(e => {
       res.status(500).send();
@@ -121,7 +120,7 @@ router.delete('/:id', (req, res, next) => {
   })
     .then(destroyed => {
       destroyed
-        ? res.status(200).send({ success: true })
+        ? res.status(204).send({ success: true })
         : res.status(404).send({ success: false });
     })
     .catch(e => {

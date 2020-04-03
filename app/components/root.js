@@ -39,16 +39,16 @@ class Root extends Component {
           <NavBar />
           <MessageConsole />
           <Switch>
+            <Route exact path="/" component={AllConvos} />
             <Route path="/userprofile" component={UserProfile} />
             <Route path="/login" component={Login} />
-            <Route exact path="/" component={AllConvos} />
             <Route path="/signup" component={SignUp} />
             <Route path="/edituser" component={EditUser} />
             <Route path="/new" component={NewConversation} />
             <Route path="/conversations/:id" component={ConversationThread} />
             <Route path="/last" component={LastTitleList} />
             <Route path="/flagged" component={FlaggedReplies} />
-            <Route path ='/ml' component={Classifier} />
+            <Route path='/ml' component={Classifier} />
             <Route component={NotFound} />
           </Switch>
         </main>

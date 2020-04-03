@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import SmallButton from '../styled/SmallButton';
 import { Button } from '../styled/Button';
 import * as Div from '../styled/Div';
 import * as Form from '../styled/Form';
