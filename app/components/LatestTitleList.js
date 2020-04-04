@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   fetchAllConversations,
   updateConversation,
@@ -62,7 +63,7 @@ class LatestTitleList extends React.Component {
                     this.props.history.push(`/conversations/${convo.id}`)
                   }
                 >
-                  {convo.title}
+                  <Link path={`/convo/:${convo.id}`}>{convo.title}</Link>
                 </Font.Paragraph>
                 <Font.Paragraph>{convo.createdAt.split('T')[0]}</Font.Paragraph>
               </FormRow>

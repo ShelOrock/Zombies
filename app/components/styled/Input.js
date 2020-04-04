@@ -20,8 +20,7 @@ export const Checkbox = styled.input`
   border-radius: 5px;
 `;
 export const NewLabel = styled.label`
-  color: blue;
-
+  color: dark-grey;
   padding-left: 15px;
   margin-bottom: 12px;
   cursor: pointer;
