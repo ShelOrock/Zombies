@@ -18,6 +18,6 @@ export const CardContainer = styled.div`
   justify-content: flex-start;
   align-items: stretch;
   align-content: flex-start;
-  padding: 0.5rem;
+  padding: 1rem;
   margin: 0rem 0rem;
 `;
