@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as Container from './styled/Div';
 import * as Font from './styled/Font';
 import * as Card from './styled/card';
-import SmallButton from './styled/SmallButton';
+import { Button } from './styled/Button';
 import { Hr } from './styled/Div';
 
 import {
@@ -30,17 +30,27 @@ class FlaggedReplies extends React.Component {
     this.props.fetchUsers(this.props.user.userType);
   }
 
-  handleUpdateReply = (e, reply) => {
+  componentDidUpdate(prevProps) {
+    if(prevProps.replies.length === 0) {
+      this.props.fetchReplies(this.props.user.userType);
+    }
+
+    if(prevProps.users.length === 0) {
+      this.props.fetchUsers(this.props.user.userType);
+    }
+  }
+
+  handleUpdateReply = (e, id) => {
     e.preventDefault();
     this.setState({ isLoading: true })
-    this.props.updateReply(reply.id, reply, this.props.user.userType)
+    this.props.updateReply(id, { isFlagged: false }, this.props.user.userType)
     .then(() => this.setState({ isLoading: false }))
   };
 
-  handleDeleteReply = (e, reply) => {
+  handleDeleteReply = (e, id) => {
     e.preventDefault();
     this.setState({ isLoading: true })
-    this.props.deleteReply(reply.id, this.props.user.userType)
+    this.props.deleteReply(id, this.props.user.userType)
     .then(() => this.setState({ isLoading: false }))
   }
   
@@ -64,12 +74,12 @@ class FlaggedReplies extends React.Component {
                 <Font.Header>Flagged Reply:</Font.Header>
                 <Font.Paragraph>{reply.body}</Font.Paragraph>
 
-                <SmallButton onClick={e => handleUpdateReply(e, reply)}>
-                  unflagged
-                </SmallButton>
-                <SmallButton onClick={e => this.handleDeleteReply(e, reply.id)}>
+                <Button onClick={e => this.handleUpdateReply(e, reply.id)}>
+                  Remove Flag
+                </Button>
+                <Button onClick={e => this.handleDeleteReply(e, reply.id)}>
                   Delete
-                </SmallButton>
+                </Button>
               </Card.Card>
             ))}
           </Card.CardContainer>
@@ -91,7 +101,7 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchReplies: token => dispatch(fetchAllReplies(token)),
     fetchUsers: token => dispatch(fetchUsers(token)),
-    updateReply: (id, reply, token) => dispatch(updateReply(reply, id, token)),
+    updateReply: (id, flagged, token) => dispatch(updateReply(id, flagged, token)),
     deleteReply: (id, token) => dispatch(deleteReply(id, token)),
   };
 };

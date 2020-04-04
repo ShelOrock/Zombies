@@ -12,8 +12,8 @@ export default styled.input`
   text-align: left;
   transition: width 0.25s ease-in;
   &:focus {
-      border: 1px solid #3FC6C0;
-      outline: none;
-      width: 80%;
+    border: 1px solid #3fc6c0;
+    outline: none;
+    width: 80%;
   }
 `;

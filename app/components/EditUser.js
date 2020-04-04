@@ -5,7 +5,8 @@ import { Container, FormColumn, FormRow } from './styled/Form';
 import { TextInput, InputFeedback } from './styled/Input';
 import { Image } from './styled/Image';
 import { Button } from './styled/Button';
-import { Header, Anchor, NewLabel } from './styled/Font';
+import { Header, NewLabel } from './styled/Font';
+import NotFound from './404Page';
 
 class EditUser extends React.Component {
   constructor() {
@@ -58,7 +59,6 @@ class EditUser extends React.Component {
 
   validate = (name, value) => {
     const { errors } = this.state;
-    //TODO: Validate on submit for values not in our database NOT onchange
     switch (name) {
       case 'name':
         if (!value) {
@@ -144,77 +144,81 @@ class EditUser extends React.Component {
     } = this.state;
 
     return (
-      <Container>
-        <Header>Public Profile</Header>
-        <FormRow>
-          <Image src={image} />
-          <TextInput
-            type="text"
-            placeholder="Image"
-            onChange={this.handleOnChange}
-            name="image"
-            value={image}
-          />
-        </FormRow>
+      this.props.userType.user === 'user' ? (
+        <Container>
+          <Header>Public Profile</Header>
+          <FormRow>
+            <Image src={image} />
+            <TextInput
+              type="text"
+              placeholder="Image"
+              onChange={this.handleOnChange}
+              name="image"
+              value={image}
+            />
+          </FormRow>
 
-        <FormColumn>
-          <NewLabel>Username</NewLabel>
-          <TextInput
-            type="text"
-            placeholder="Username"
-            onChange={this.handleOnChange}
-            name="name"
-            value={name}
-          />
-          <InputFeedback>{nameError}</InputFeedback>
-        </FormColumn>
-        <FormColumn>
-          <NewLabel>Email</NewLabel>
-          <TextInput
-            type="text"
-            placeholder="email"
-            onChange={this.handleOnChange}
-            name="email"
-            value={email}
-          />
-          <InputFeedback>{emailError}</InputFeedback>
-        </FormColumn>
+          <FormColumn>
+            <NewLabel>Username</NewLabel>
+            <TextInput
+              type="text"
+              placeholder="Username"
+              onChange={this.handleOnChange}
+              name="name"
+              value={name}
+            />
+            <InputFeedback>{nameError}</InputFeedback>
+          </FormColumn>
+          <FormColumn>
+            <NewLabel>Email</NewLabel>
+            <TextInput
+              type="text"
+              placeholder="email"
+              onChange={this.handleOnChange}
+              name="email"
+              value={email}
+            />
+            <InputFeedback>{emailError}</InputFeedback>
+          </FormColumn>
 
-        <FormColumn>
-          <NewLabel>Password</NewLabel>
-          <TextInput
-            type="password"
-            placeholder="password"
-            onChange={this.handleOnChange}
-            name="password"
-            value={password}
-          />
-          <InputFeedback>{passwordError}</InputFeedback>
-        </FormColumn>
-        <FormColumn>
-          <NewLabel>Bio</NewLabel>
-          <TextInput
-            type="text"
-            placeholder="bio"
-            onChange={this.handleOnChange}
-            name="bio"
-            value={bio}
-          />
-        </FormColumn>
-        <Button
-          disabled={
-            !name ||
-            !email ||
-            !password ||
-            Object.values(errors).some(val => !!val)
-              ? true
-              : false
-          }
-          onClick={this.handleOnClick}
-        >
-          Update profile
-        </Button>
-      </Container>
+          <FormColumn>
+            <NewLabel>Password</NewLabel>
+            <TextInput
+              type="password"
+              placeholder="password"
+              onChange={this.handleOnChange}
+              name="password"
+              value={password}
+            />
+            <InputFeedback>{passwordError}</InputFeedback>
+          </FormColumn>
+          <FormColumn>
+            <NewLabel>Bio</NewLabel>
+            <TextInput
+              type="text"
+              placeholder="bio"
+              onChange={this.handleOnChange}
+              name="bio"
+              value={bio}
+            />
+          </FormColumn>
+          <Button
+            disabled={
+              !name ||
+              !email ||
+              !password ||
+              Object.values(errors).some(val => !!val)
+                ? true
+                : false
+            }
+            onClick={this.handleOnClick}
+          >
+            Update profile
+          </Button>
+        </Container>
+      ) : (
+        <NotFound />
+      )
     );
   }
 }

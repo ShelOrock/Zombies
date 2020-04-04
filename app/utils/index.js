@@ -45,10 +45,12 @@ const convertToGlyphs = str => {
         .replace(/&amp;/g, '&')
         .replace(/&quot;/g, '\"')
         .replace(/&apos;/g, '\'')
+        .replace(/&nbsp;/g, ' ')
     : '';
 };
 
 const createURL = ({ html, css, js }) => {
+  console.log(html, css, js)
   const getBlobURL = (code, type) => {
     const blob = new Blob([code], { type });
     return URL.createObjectURL(blob);
