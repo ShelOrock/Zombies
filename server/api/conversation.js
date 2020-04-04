@@ -11,8 +11,6 @@ router.get('/', (req, res, next) => {
     include: {
       model: Cohort,
     },
-    limit: RESULTS_PER_PAGE,
-    offset: (req.query.page || 0) * RESULTS_PER_PAGE,
     order: [['title', 'DESC']],
   })
     .then(results => {
@@ -146,10 +144,6 @@ router.put('/:id', (req, res, next) => {
 });
 
 router.delete('/:id', (req, res, next) => {
-
-  if(req.headers.authorization !== `Bearer admin`) {
-    res.status(403).send('You do not have permission to perform this request. Contact administrator.')
-  }
 
   Conversation.destroy({
     where: {

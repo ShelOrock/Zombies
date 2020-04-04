@@ -44,7 +44,6 @@ class Root extends Component {
       <Router>
         <main>
           <NavBar />
-          <MessageConsole />
           <Switch>
             <Route exact path="/" component={AllConvos} />
             <Route path="/userprofile" component={UserProfile} />
