@@ -34,7 +34,7 @@ export default ({ reply }) => {
 
   return (
     <div>
-      <iframe id='iframe' sandbox='allow-scripts allow-same-origin allow-forms' name='replyOutput' src={urlSource}>
+      <iframe id='iframe' sandbox='allow-scripts allow-same-origin allow-forms' name='replyOutput' src={urlSource} height="500px" width="100%">
         Oops. Your browser does not support iframes.
       </iframe>
       <div id='replyConsole'
