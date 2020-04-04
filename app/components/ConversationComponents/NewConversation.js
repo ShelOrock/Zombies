@@ -53,7 +53,9 @@ class NewConversation extends Component {
 
     const cleanText = pruneHTML(this.props.body.bodyText);
     const mlTag = (await Axios.post('/api/ml/classify', { doc: cleanText })).data;
+    console.log(mlTag);
     const tagList = this.props.tags.filter(t => t.name === mlTag);
+    console.log(tagList);
 
     this.props.createConversation(
       {
@@ -152,6 +154,7 @@ class NewConversation extends Component {
       errors,
       errors: { topicError, bodyError },
     } = this.state;
+    console.log(this.props.repositories);
 
     return (
       <MainContainer>
@@ -177,8 +180,8 @@ class NewConversation extends Component {
               >
                 {this.props.repositories.map(repo => {
                   return (
-                    <Option key={repo.id} value={repo.html_url}>
-                      {repo.name}
+                    <Option key={repo.id} value={repo.full_name}>
+                      {repo.full_name}
                     </Option>
                   );
                 })}

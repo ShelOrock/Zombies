@@ -21,15 +21,22 @@ import { fetchTags } from '../redux/tags/thunks';
 import { fetchRepos } from '../redux/repository/thunks';
 
 class Root extends Component {
-  componentDidMount() {
-    this.props
-      .getUserFromGitHub()
-      .then(() => this.props.fetchRepos(this.props.user.githubUsername));
+  async componentDidMount() {
+    await this.props.getUserFromGitHub();
+    console.log(this.props.user);
+    console.log(this.props.user.githubUsername);
+    this.props.fetchRepos(this.props.user.githubUsername);
+    console.log(this.props.repositories);
     this.props.fetchTags();
   }
 
-  componenDidUpdate() {
-    this.props.setUser(this.props.user);
+  componenDidUpdate(prevProps) {
+    if (this.props != prevProps) {
+      this.props.setUser(this.props.user);
+      if (this.props.user.githubUsername) {
+        this.props.fetchRepos(this.props.user.githubUsername);
+      }
+    }
   }
 
   render() {
@@ -57,12 +64,12 @@ class Root extends Component {
   }
 }
 
-const mapState = ({ user }) => ({ user });
+const mapState = ({ user, repositories }) => ({ user, repositories });
 
 const mapDispatch = dispatch => ({
   getUserFromGitHub: () => dispatch(getUserFromGitHub()),
   fetchTags: () => dispatch(fetchTags()),
-  fetchRepos: () => dispatch(fetchRepos()),
+  fetchRepos: (username) => dispatch(fetchRepos(username)),
 });
 
 export default connect(mapState, mapDispatch)(Root);
