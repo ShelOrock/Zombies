@@ -95,3 +95,8 @@ hr {
 .ql-clipboard {
   width: 100%!important;
 }
+
+iframe {
+  width: 100%!important;
+  height: 300px;
+}
