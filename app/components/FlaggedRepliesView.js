@@ -31,11 +31,11 @@ class FlaggedReplies extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.replies.length === 0) {
+    if(prevProps.replies.length === 0 && this.props.replies.length !== 0) {
       this.props.fetchReplies(this.props.user.userType);
     }
 
-    if(prevProps.users.length === 0) {
+    if(prevProps.users.length === 0 && this.props.users.length !== 0) {
       this.props.fetchUsers(this.props.user.userType);
     }
   }
