@@ -13,7 +13,7 @@ router.get('/', (req, res, next) => {
     },
     limit: RESULTS_PER_PAGE,
     offset: (req.query.page || 0) * RESULTS_PER_PAGE,
-    order: [['createdAt', 'DESC']],
+    order: [['title', 'DESC']],
   })
     .then(results => {
       res.status(200).send(results);
@@ -107,10 +107,6 @@ router.post('/', (req, res, next) => {
     return res.status(400).send('Missing information');
   }
 
-  if(req.headers.authorization !== `Bearer ${userId}`) {
-    return res.status(403).send('You do not have permission to perform this action. Contact administrator.')
-  }
-
   Conversation.create({
     userId,
     title,
@@ -130,10 +126,6 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/:id', (req, res, next) => {
-
-  if(req.headers.authorization !== `Bearer admin` && req.headers.authorization !== `Bearer user`) {
-    res.status(403).send('You do not have permission to perform this request. Contact administrator.')
-  }
 
   Conversation.update(
     { ...req.body },

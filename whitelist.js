@@ -20,6 +20,7 @@ const whitelist = {
     'recursion':39,
     'type':41,
     'ropedude':46,
+    'event listener': 47
 }
 
 module.exports = whitelist;
