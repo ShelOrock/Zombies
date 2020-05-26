@@ -12,34 +12,54 @@ import SearchCollapse from '../styled/SearchCollapse';
 import { Pill } from '../styled/Pill';
 import { extractTokens } from '../../utils';
 
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+
+const GET_CONVERSATIONS = gql`
+  query allConversations {
+    conversations {
+      id
+      title
+      hasAnswer
+      replies {
+        id
+      }
+      tag
+    }
+    tags {
+      id
+      name
+    }
+  }
+`;
+
 function AllConvos(props) {
-  const [page, setPage] = useState(0);
-  const [selectedTags, setTags] = useState([]);
+  const [tags, setTags] = useState([]);
   const [searchStr, setSearch] = useState('');
-  const convosList = useSelector(state => state.allConversations);
-  const activeTags = useSelector(state => state.tags.active);
-  const whitelist = useSelector(state => state.tags.whitelist);
-  const dispatch = useDispatch();
+
+  const { data, loading, error } = useQuery(GET_CONVERSATIONS);
+  const [conversationList, setList] = useState([]);
+  const [allTags, setAllTags] = useState([]);
 
   const handleClick = id => {
     props.history.push(`/conversations/${id}`);
   };
 
-  const handleChange = (body) => {
-    if (body) {
-      dispatch(searchReplies(body));
-    } else {
-      selectedTags.length ? 
-      dispatch(filterConversations(selectedTags))
-      : dispatch(fetchAllConversations())
+  const handleChange = (str) => {
+    if (data) {
+      let searchData = data.conversations;
+      if (str) {
+        searchData = searchData.filter(convo => convo.title.search(str) >= 0);
+      }
+      setSearch(str);
+      setList(searchData);
     }
-    setSearch(body);
   };
 
   const handleFilter = (tag) => {
-    let updatedTags = [...selectedTags];
-    if (selectedTags.includes(tag)) {
-      updatedTags = selectedTags.filter(t => t !== tag);
+    let updatedTags = [...tags];
+    if (tags.includes(tag)) {
+      updatedTags = tags.filter(t => t !== tag);
     } else {
       updatedTags.push(tag);
     }
@@ -47,16 +67,37 @@ function AllConvos(props) {
   };
 
   useEffect(() => {
-    if (!Object.keys(whitelist).length) {
-      dispatch(fetchTags());
+    //load the whitelist of tags
+    if (data && !allTags.length) {
+      setAllTags(data.tags);
     }
-    if (!selectedTags.length) {
-      dispatch(fetchAllConversations());
-    } else {
-      dispatch(filterConversations(selectedTags))
+    //if the data has loaded but conversation list is still empty, reset it
+    if (data && !conversationList.length) {
+      setList(data.conversations);
     }
-  }, [selectedTags]);
+  });
 
+  useEffect(() => {
+    if (data) {
+      let filteredData = data.conversations;
+      if (tags.length) {
+        filteredData = filteredData.filter(convo => tags.includes(convo.tag));
+      }
+      setList(filteredData);
+    }
+  }, [tags])
+
+  if (loading) return (
+    <div>
+      Loading...
+    </div>
+  );
+
+  if (error || !data) return (
+    <div>
+      graphQL Error
+    </div>
+  );
 
   return (
     <Div.Container id="conversations-index">
@@ -66,10 +107,10 @@ function AllConvos(props) {
       </Font.Paragraph>
       <Card.CardContainer>
         {
-            activeTags.map(tag => (
+            allTags.map(tag => (
             <Pill
                 key={tag.id}
-                selected={selectedTags.includes(tag.name)}
+                selected={tags.includes(tag.name)}
                 onClick={() => handleFilter(tag.name)}
             >
                 {tag.name}
@@ -84,7 +125,7 @@ function AllConvos(props) {
         onChange={e => handleChange(e.target.value)}
       />
       <Card.CardContainer>
-        {convosList.map(convo => (
+        {conversationList.map(convo => (
           <Card.Card key={convo.id} onClick={() => handleClick(convo.id)}>
             <Font.h5>{convo.title}</Font.h5>
             {convo.hasAnswer && <Font.Label style={{ color: '#7992FF' }}>Answered</Font.Label>}
